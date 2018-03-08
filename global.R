@@ -1,11 +1,10 @@
 library(shinydashboard)
-# library(shiny)
+library(shiny)
 library(shinycssloaders)
-# library(shinyBS)
-# library(shinyjs)
-# library(bsplus)
-# library(geonames)
 library(tidyverse)
 library(igraph)
 library(tidygraph)
 library(visNetwork)
+
+# load graph =============================================================================
+CASP_net <- read_rds("data/CASP_net.rds")

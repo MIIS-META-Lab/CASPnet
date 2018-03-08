@@ -11,7 +11,7 @@ paths <- list(attrs = "data/flat_files/CASPAttributes.csv",
               el_info = "data/flat_files/Info-Transposed Final Connections.csv")
 
 # read flat files ========================================================================
-attrs <- paths$attrs  %>%
+attrs <- paths$attrs %>%
   read_csv() %>% 
   rename_all(str_replace_all, "([a-z])([A-Z])", "\\1_\\2") %>%
   rename_all(str_replace_all, "-|\\s", "_") %>%
@@ -60,19 +60,13 @@ g <- graph_from_data_frame(combo_el, vertices = attrs, directed = FALSE) %>%
                            edge_type == "drivers" ~ "yellow"))
 
 # write graph as .rds ====================================================================
-# write_rds(g, "data/CASP_net.rds")
+write_rds(g, "data/CASP_net.rds")
 
-# calculate and write coords =============================================================
-# coords <- layout_with_fr(g, niter = 100000, 
-#                          start.temp = 100000,
-#                          weights = rep(1, length(E(g) * 0.25)))
-
+# test visual ============================================================================
 options(viewer = NULL)
+
 g %>%
-  # filter(edge_type == "works with") %>%
-  # as.igraph() %>%
-  # simplify() %>%
-  visIgraph(physics = TRUE, layout = "layout.norm", 
+  visIgraph(physics = TRUE, layout = "layout.norm",
             layoutMatrix = layout_with_fr(g)) %>%
   visPhysics(repulsion = list(springlength = 100),
              maxVelocity = 1,
@@ -82,13 +76,4 @@ g %>%
   visEvents(type = "on", startStabilizing = "function() {
             this.moveTo({scale:0.0001})}")
 
-  # visPhysics(solver = "repulsion")
-  visPhysics(solver = "forceAtlas2Based", 
-             # stabilization = list(enabled = TRUE, iterations = 10000),
-             forceAtlas2Based = list(gravitationalConstant = -10000))
 
-  # visIgraphLayout(layout = "layout.norm",
-                  # layoutMatrix = layout_with_fr(g))
-
-# library(networkD3)
-networkD3::
