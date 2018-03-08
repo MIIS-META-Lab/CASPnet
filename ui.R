@@ -1,6 +1,5 @@
 # HEADER =================================================================================
 header <- dashboardHeader(title = "CASP Network",
-                          # titleWidth = 750,
                           tags$li(a(href = "https://www.facebook.com/future.futuro/",
                                     target = "_blank",
                                     img(src = "facebook_logo_transparent.png",
@@ -45,7 +44,8 @@ body <- dashboardBody(
   tabItems(
     #* network ====
     tabItem(tabName = "network",
-            fluidRow(column(width = 3
+            fluidRow(column(width = 3,
+                            visNetworkOutput("out_net")
                      #        dataTableOutput(outputId = "side_table", 
                      #                            height = 800) %>%
                      #           withSpinner(6)),
