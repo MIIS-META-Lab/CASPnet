@@ -1,0 +1,54 @@
+
+
+.skin-blue .main-header .navbar {
+  background-color: black;
+  height: 50px;
+}
+
+.skin-blue .main-header .logo {
+  background-color: black;
+  color: white;
+  font-family: Verdana,Arial,sans-serif;
+  font-weight: bold;
+}
+
+.skin-blue .main-header .logo:hover {
+  background-color: #3c8dbc;
+}
+
+.skin_blue .main-header .dropdown {
+  background-color: #2A4C6E;
+  font-family: "Lucida Console";
+  font-weight: bold;
+  padding-top:0;
+  padding-bottom:0;
+}
+
+.skin-blue .main-header .dropdown:hover {
+  background-color: #878787;
+}
+
+
+.skin-blue .sidebar {
+  background-color: white;
+  color: black;
+}
+
+.skin-blue .main-sidebar .sidebar .sidebar-menu a {
+  background-color: white;
+  color: black;
+}
+
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+  color: #3c8dbc;
+  }
+  
+.modal-lg{
+  width: 1440px;
+  max-height: 75%;
+}
+
+
+
+
+
