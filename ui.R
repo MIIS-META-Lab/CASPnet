@@ -44,17 +44,23 @@ body <- dashboardBody(
   tabItems(
     #* network ====
     tabItem(tabName = "network",
+            # fluidRow(column(width = 8,
+            #                 radioButtons(inputId = "in_edge_type",
+            #                              label = "Select Connection Type",
+            #                              choices = c("Drivers",
+            #                                          "Works with",
+            #                                          "Knows",
+            #                                          "Info")))),
             fluidRow(column(width = 3,
-                            visNetworkOutput("out_net")
-                     #        dataTableOutput(outputId = "side_table", 
-                     #                            height = 800) %>%
-                     #           withSpinner(6)),
-                     # bsModal("aboutModal", h3(" "), "", size = "large",
-                     #         includeMarkdown("www/about.md")),
-                     # column(width = 6,
-                     #        leafletOutput(outputId = "country_leaf", 
-                     #                      height = 800) %>%
-                     #          withSpinner(6)
+                            radioButtons(inputId = "in_edge_type",
+                                         label = "Select Connection Type",
+                                         choices = c("Drivers",
+                                                     "Works with",
+                                                     "Knows",
+                                                     "Info"))),
+                     column(width = 8,
+                            visNetworkOutput("out_net", height = 700) %>%
+                              withSpinner(6)
                             )
                      )
             ),
@@ -73,8 +79,7 @@ body <- dashboardBody(
 dashboardPage(
   header,
   sidebar,
-  body
-  ,
+  body,
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
   )
 )
