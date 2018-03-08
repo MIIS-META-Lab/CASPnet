@@ -6,14 +6,9 @@ function(input, output, session){
   #                       easyClose = TRUE))
   
   output$out_net <- renderVisNetwork({
-    CASP_net %>%
-      visIgraph(physics = TRUE) %>%
-      visPhysics(maxVelocity = 1,
-                 solver = "forceAtlas2Based",
-                 forceAtlas2Based = list(gravitationalConstant = -1000)) %>%
-      visOptions(highlightNearest = list(enabled = TRUE, degree = 1, hover = T)) #%>%
-      # visEvents(type = "on",
-      #           startStabilizing = "function() {this.moveTo({scale:0.0001})}")
+      CASP_net %>% 
+      filter(edge_type %in% str_to_lower(input$in_edge_type)) %>%
+      visualize_graph()
   })
   
   session$onSessionEnded(stopApp)

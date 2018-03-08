@@ -28,7 +28,8 @@ attrs <- paths$attrs %>%
                                    six_years_in_casp ~ 6L,
                                    seven_years_in_casp ~ 7L,
                                    no_response_years_in_casp ~ NA_integer_)) %>%
-  select(-contains("_years_in_casp"))
+  select(-contains("_years_in_casp")) %>%
+  select(1:5)
   
 
 el_drivers <- paths$el_drivers %>%
@@ -51,29 +52,39 @@ el_info <- paths$el_knows %>%
 combo_el <- bind_rows(el_drivers, el_work_with, el_knows, el_info)
 
 # build graph ============================================================================
-g <- graph_from_data_frame(combo_el, vertices = attrs, directed = FALSE) %>%
+g <- graph_from_data_frame(d = combo_el, vertices = attrs, directed = FALSE) %>%
   simplify(remove.multiple = FALSE, remove.loops = TRUE) %>%
-  as_tbl_graph() %E>%
+  as_tbl_graph() %>%
+  activate(edges) %>%
   mutate(color = case_when(edge_type == "info" ~ "salmon",
-                           edge_type == "know" ~ "lightblue",
+                           edge_type == "knows" ~ "lightblue",
                            edge_type == "works with" ~ "green",
                            edge_type == "drivers" ~ "yellow"))
-
 # write graph as .rds ====================================================================
 write_rds(g, "data/CASP_net.rds")
 
-# test visual ============================================================================
-options(viewer = NULL)
+# write coords as .rds ===================================================================
+coords <- layout_components(g)
 
-g %>%
-  visIgraph(physics = TRUE, layout = "layout.norm",
-            layoutMatrix = layout_with_fr(g)) %>%
-  visPhysics(repulsion = list(springlength = 100),
-             maxVelocity = 1,
-             solver = "forceAtlas2Based",
-             forceAtlas2Based = list(gravitationalConstant = -500)) %>%
-  visOptions(highlightNearest = list(enabled = T, degree = 1, hover = T)) %>%
-  visEvents(type = "on", startStabilizing = "function() {
-            this.moveTo({scale:0.0001})}")
+write_rds(coords, "data/coords.rds")
+
+
+
+
+
+# test visual ============================================================================
+
+# options(viewer = NULL)
+
+# g %>%
+#   visIgraph(physics = TRUE, layout = "layout.norm",
+#             layoutMatrix = layout_with_fr(g)) %>%
+#   visPhysics(repulsion = list(springlength = 100),
+#              maxVelocity = 1,
+#              solver = "forceAtlas2Based",
+#              forceAtlas2Based = list(gravitationalConstant = -500)) %>%
+#   visOptions(highlightNearest = list(enabled = T, degree = 1, hover = T)) %>%
+#   visEvents(type = "on", startStabilizing = "function() {
+#             this.moveTo({scale:0.0001})}")
 
 
