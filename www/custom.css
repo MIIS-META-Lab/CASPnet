@@ -13,11 +13,10 @@
 }
 
 .skin-blue .main-header .logo:hover {
-  background-color: #3c8dbc;
+  background-color: #878787;
 }
 
 .skin_blue .main-header .dropdown {
-  background-color: #2A4C6E;
   font-family: "Lucida Console";
   font-weight: bold;
   padding-top:0;
@@ -28,11 +27,17 @@
   background-color: #878787;
 }
 
+.sidebar-toggle:hover {
+  background-color: #878787 !important;
+}
 
 .skin-blue .sidebar {
   background-color: white;
   color: black;
 }
+
+
+
 
 .skin-blue .main-sidebar .sidebar .sidebar-menu a {
   background-color: white;
@@ -40,8 +45,8 @@
 }
 
 .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
-  color: #3c8dbc;
-  }
+  color: #878787;
+}
   
 .modal-lg{
   width: 1440px;

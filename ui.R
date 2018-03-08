@@ -44,29 +44,21 @@ body <- dashboardBody(
   tabItems(
     #* network ====
     tabItem(tabName = "network",
-            # fluidRow(column(width = 8,
-            #                 radioButtons(inputId = "in_edge_type",
-            #                              label = "Select Connection Type",
-            #                              choices = c("Drivers",
-            #                                          "Works with",
-            #                                          "Knows",
-            #                                          "Info")))),
             fluidRow(column(width = 3,
-                            radioButtons(inputId = "in_edge_type",
-                                         label = "Select Connection Type",
-                                         choices = c("Drivers",
-                                                     "Works with",
-                                                     "Knows",
-                                                     "Info"))),
+                            checkboxGroupInput(inputId = "in_edge_type",
+                                               label = "Select Connection Type",
+                                               choices = c("Drivers",
+                                                           "Works with",
+                                                           "Knows",
+                                                           "Info"))),
                      column(width = 8,
-                            visNetworkOutput("out_net", height = 700) %>%
-                              withSpinner(6)
+                            visNetworkOutput("out_net", height = 600) %>%
+                              withSpinner()
                             )
                      )
             ),
     tabItem(tabName = "about",
-            fluidRow(column(width = 12
-                            # ,
+            fluidRow(column(width = 12 # ,
                             # includeMarkdown("www/about.md")
                             )
                      )
