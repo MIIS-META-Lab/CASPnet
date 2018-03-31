@@ -31,6 +31,10 @@
   background-color: #878787 !important;
 }
 
+#sidebar {
+  background-color: #dec4de;
+  }
+
 .skin-blue .sidebar {
   background-color: white;
   color: black;
