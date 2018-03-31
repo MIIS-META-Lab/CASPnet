@@ -37,7 +37,6 @@ header <- dashboardHeader(
                      background-color:black"
             ),
           class = "dropdown")
-                          
 )
 
 # SIDEBAR ================================================================================
@@ -50,10 +49,10 @@ sidebar <-
                tabName = "network",
                icon = icon("connectdevelop", lib = "font-awesome")),
       selectInput(inputId = "in_edge_type",
-                         label = "Connection Type",
-                         choices = c("All", "Any", "Drivers", "Works With",
-                                     "Knows", "Info"), 
-                         selected = "All"
+                  label = "Connection Type",
+                  choices = c("All", "Any", "Drivers",
+                              "Works With", "Knows", "Info"),
+                  selected = "All"
                          ),
       #* about ====
       menuItem("About", tabName = "about",
