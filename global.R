@@ -1,5 +1,4 @@
 library(shinydashboard)
-# library(shiny)
 library(shinycssloaders)
 library(tidyverse)
 library(igraph)
@@ -61,7 +60,6 @@ visualize_graph <- function(g, title){
     visOptions(highlightNearest = list(enabled = TRUE, degree = 1, labelOnly = FALSE,
                                        hover = TRUE),
                nodesIdSelection  = list(enabled = TRUE))
-  # vis_g$nodes$
 }
 
 get_distances <- function(g){
@@ -81,7 +79,7 @@ plot_distances <- function(g, title){
     mutate(value = paste(value, "Step(s)")) %>% 
     group_by(value) %>%
     summarise(n = n()) %>%
-    mutate(color = cust_pal(nrow(.)))
+    mutate(bar_color = cust_pal(nrow(.)))
   
   highchart() %>% 
     hc_xAxis(title = list(text = "Number of Steps"),
@@ -90,7 +88,7 @@ plot_distances <- function(g, title){
     hc_legend(NULL) %>% 
     hc_title(text = paste0("Degrees of Separation-", title, " Connections")) %>%
     hc_add_series(g_distances, "column", name = "Count",
-             hcaes(x = value, y = n, color = color)) %>%
+             hcaes(x = value, y = n, color = bar_color)) %>%
     hc_chart(options3d = list(enabled = TRUE,
                               beta = 15, alpha = 10))
 }
@@ -103,7 +101,7 @@ plot_betweenness <- function(g, title){
     arrange(desc(btwn)) %>% 
     select(short_names, name, btwn) %>% 
     head(20) %>%
-    mutate(color = colors(nrow(.)))
+    mutate(bar_color = cust_pal(nrow(.)))
 
   highchart() %>%
     hc_xAxis(title = list(text = NULL),
@@ -113,8 +111,8 @@ plot_betweenness <- function(g, title){
     hc_legend(NULL) %>%
     hc_title(text = paste0("Liasions-", title, " Connections: Top 20")) %>%
     hc_add_series(g_btwn, "bar", name = "Liaison Score",
-             hcaes(x = name, y = btwn, color = color)) %>%
+                  hcaes(x = name, y = btwn, color = bar_color)) %>%
     hc_chart(options3d = list(enabled = TRUE,
-                              beta = 15, alpha = 10)) %>% 
+                              beta = 15, alpha = 10)) %>%
     hc_tooltip(options = list(decimalPoint = ","))
 }
