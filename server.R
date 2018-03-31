@@ -1,5 +1,4 @@
 function(input, output, session){
-  
   # on-load modal ========================================================================
   showModal(modalDialog(title = "About", size = "l",
                         renderUI(includeMarkdown("www/about.md")),
