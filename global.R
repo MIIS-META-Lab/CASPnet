@@ -19,15 +19,26 @@ CASP_simple <- read_rds("data/CASP_net.rds") %>%
 CASP_net <- read_rds("data/CASP_net.rds") %>% 
   bind_edges(CASP_simple) %E>% 
   mutate(edge_type = str_to_title(edge_type)) %>% 
-  mutate(color = "#85bedb") %N>% 
+  select(-color) %>% 
+  mutate(color.hover = "#00c3ff") %>% 
+  mutate(color.highlight = "#00c3ff") %N>% 
   mutate(title = name) %>%
+  mutate(color.background = color) %>%
+  mutate(color.background = case_when(color == "gray" ~ "lightgray",
+                                      TRUE ~ color.background)) %>% 
+  select(-color) %>% 
+  mutate(color.highlight.background = "white",
+         color.border = color.background,
+         color.highlight.border = "#00c3ff",
+         color.hover.border = "#00c3ff",
+         color.hover = "white") %>% 
   mutate(name = str_replace_all(name, "�", "'")) %>% 
   filter(centrality_degree() > 0)
 
 full_coords <- CASP_net %E>%
   filter(edge_type == "Any") %>% 
   as.igraph() %>% 
-  layout_with_lgl(area = vcount(.)^4)
+  layout_with_lgl(area = vcount(.)^3.75)
 
 CASP_net <- CASP_net %>% 
   mutate(x = full_coords[,1], y = full_coords[,2])
@@ -54,11 +65,10 @@ visualize_graph <- function(g, title){
   vis_g <- visNetwork(vis_g$nodes, vis_g$edges, main = paste(title, "Connections")) %>% 
     visIgraphLayout(physics = FALSE, type = "full", randomSeed = 1234,
                     layout = "layout.norm", layoutMatrix = coords) %>%
-    visNodes(size = 30, 
-             shadow = list(enabled = TRUE, size = 10)) %>%
-    visEdges(selectionWidth = 15) %>% 
-    visOptions(highlightNearest = list(enabled = TRUE, degree = 1, labelOnly = FALSE,
-                                       hover = TRUE),
+    visNodes(size = 30, shadow = list(enabled = TRUE, size = 10)) %>%
+    visEdges(color = "lightgray") %>%
+    visOptions(highlightNearest = list(enabled = TRUE, degree = 1, 
+                                       labelOnly = FALSE, hover = TRUE),
                nodesIdSelection  = list(enabled = TRUE))
 }
 
@@ -88,15 +98,13 @@ plot_distances <- function(g, title){
     hc_legend(NULL) %>% 
     hc_title(text = paste0("Degrees of Separation-", title, " Connections")) %>%
     hc_add_series(g_distances, "column", name = "Count",
-             hcaes(x = value, y = n, color = bar_color)) %>%
-    hc_chart(options3d = list(enabled = TRUE,
-                              beta = 15, alpha = 10))
+                  hcaes(x = value, y = n, color = bar_color)) %>%
+    hc_chart(options3d = list(enabled = TRUE, beta = 15, alpha = 10))
 }
 
 plot_betweenness <- function(g, title){
   g_btwn <- g %N>%
-    mutate(btwn = centrality_betweenness() %>% 
-             round(digits = 0)) %>% 
+    mutate(btwn = round(centrality_betweenness(), digits = 0)) %>% 
     as_tibble() %>% 
     arrange(desc(btwn)) %>% 
     select(short_names, name, btwn) %>% 
@@ -112,7 +120,6 @@ plot_betweenness <- function(g, title){
     hc_title(text = paste0("Liasions-", title, " Connections: Top 20")) %>%
     hc_add_series(g_btwn, "bar", name = "Liaison Score",
                   hcaes(x = name, y = btwn, color = bar_color)) %>%
-    hc_chart(options3d = list(enabled = TRUE,
-                              beta = 15, alpha = 10)) %>%
+    hc_chart(options3d = list(enabled = TRUE, beta = 15, alpha = 10)) %>%
     hc_tooltip(options = list(decimalPoint = ","))
 }
